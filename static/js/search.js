@@ -1,28 +1,34 @@
 let debounceTimer;
+let searchInput, searchSuggestions;
 
 document.addEventListener("DOMContentLoaded", () => {
-
-    const searchInput = document.getElementById('searchInput');
+    searchInput = document.getElementById('searchInput');
+    searchSuggestions = document.getElementById('searchSuggestions');
     searchInput.addEventListener('input', debounceSearch);
+
+    // Use event delegation for document clicks
+    document.body.addEventListener('click', (event) => {
+        if (event.target !== searchInput && !searchSuggestions.contains(event.target)) {
+            searchSuggestions.innerHTML = '';
+        }
+    });
 });
 
 function debounceSearch() {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
-        const searchInput = document.getElementById('searchInput');
         if (searchInput.value.length >= 3) {
             searchArtists();
         } else {
-            const searchSuggestions = document.getElementById('searchSuggestions');
             searchSuggestions.innerHTML = '';
             document.querySelectorAll('.artist-card').forEach(card => card.style.display = "");
         }
-    }, 300); // 300ms delay
+    }, 300);
 }
 
 function searchArtists() {
-    const searchInput = document.getElementById('searchInput');
-    const searchSuggestions = document.getElementById('searchSuggestions');
+    searchInput = document.getElementById('searchInput');
+    searchSuggestions = document.getElementById('searchSuggestions');
     const filter = searchInput.value.toLowerCase();
     const artistCards = document.querySelectorAll('.artist-card');
 
@@ -101,8 +107,8 @@ function searchArtists() {
 
 // Add this event listener to hide suggestions when clicking outside
 document.addEventListener('click', function (event) {
-    const searchSuggestions = document.getElementById('searchSuggestions');
-    const searchInput = document.getElementById('searchInput');
+    searchSuggestions = document.getElementById('searchSuggestions');
+    searchInput = document.getElementById('searchInput');
     if (event.target !== searchInput && event.target !== searchSuggestions) {
         searchSuggestions.innerHTML = '';
     }
