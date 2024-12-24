@@ -7,24 +7,6 @@
     <title>Groupie Tracker - {{ .Artist.Name }}</title>
     <link rel="stylesheet" href="static/styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <style>
-        .banner {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            z-index: 1000;
-        }
-
-        .banner.active {
-            display: block;
-        }
-    </style>
 </head>
 
 <body>
@@ -62,15 +44,17 @@
         ];
 
         const locationData = "{{ .LocationData }}";
+        let map, markers;
+        let activeButton = null;
 
         function initMap() {
-            const map = L.map('map').setView([0, 0], 1);
+            map = L.map('map').setView([0, 0], 1);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
-            const markers = new Map();
+            markers = new Map();
             let geocodedCount = 0;
 
             // Show loading indicator
@@ -93,10 +77,7 @@
                         if (data && data.length > 0) {
                             const { lat, lon } = data[0];
                             const marker = L.marker([lat, lon]).addTo(map);
-
-                            // Bind a popup to the marker with the location name
                             marker.bindPopup(`<b>${location}</b>`);
-
                             markers.set(location, marker);
                         }
                         geocodedCount++;
@@ -114,31 +95,56 @@
             }
 
             function finishLoading() {
-                // Remove loading indicator
                 loadingOverlay.remove();
-
-                // Fit the map to show all markers
                 if (markers.size > 0) {
                     const group = new L.featureGroup(Array.from(markers.values()));
                     map.fitBounds(group.getBounds().pad(0.1));
                 }
-
-                // Enable clickable buttons for locations
-                const locationButtons = document.querySelectorAll('.location-item');
-                locationButtons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const location = button.dataset.location;
-                        if (markers.has(location)) {
-                            const marker = markers.get(location);
-                            map.setView(marker.getLatLng(), 4); // Zoom in on marker
-
-                            // Open the marker's popup
-                            marker.openPopup();
-                        }
-                    });
-                });
+                initializeLocationButtons();
             }
+        }
 
+        function initializeLocationButtons() {
+            const locationButtons = document.querySelectorAll('.location-item');
+            locationButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const location = this.dataset.location;
+                    if (this === activeButton) {
+                        // If clicking the active button, reset the map and remove the border
+                        resetMap();
+                        this.style.border = 'none';
+                        activeButton = null;
+                    } else {
+                        // Deactivate the previous button (if any)
+                        if (activeButton) {
+                            activeButton.style.border = 'none';
+                        }
+                        // Activate this button
+                        this.style.border = '1px solid white';
+                        activeButton = this;
+                        // Show the location on the map
+                        showLocation(location);
+                    }
+                });
+            });
+        }
+
+        function showLocation(location) {
+            if (markers.has(location)) {
+                const marker = markers.get(location);
+                map.setView(marker.getLatLng(), 4);
+                marker.openPopup();
+            }
+        }
+
+        function resetMap() {
+            if (activeButton) {
+                activeButton.style.border = 'none';
+                activeButton = null;
+            }
+            const group = new L.featureGroup(Array.from(markers.values()));
+            map.fitBounds(group.getBounds().pad(0.1));
+            markers.forEach(marker => marker.closePopup());
         }
 
         // Call initMap when the page loads
