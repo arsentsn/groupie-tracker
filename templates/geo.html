@@ -58,7 +58,7 @@
         const locations = [
             "{{ range .Locations }}",
             "{{ FormatLocation . }}",
-            "  {{ end }}"
+            "{{ end }}"
         ];
 
         const locationData = "{{ .LocationData }}";
@@ -94,6 +94,9 @@
                             const { lat, lon } = data[0];
                             const marker = L.marker([lat, lon]).addTo(map);
 
+                            // Bind a popup to the marker with the location name
+                            marker.bindPopup(`<b>${location}</b>`);
+
                             markers.set(location, marker);
                         }
                         geocodedCount++;
@@ -127,11 +130,15 @@
                         const location = button.dataset.location;
                         if (markers.has(location)) {
                             const marker = markers.get(location);
-                            map.setView(marker.getLatLng(), 5); // Zoom in on marker
+                            map.setView(marker.getLatLng(), 4); // Zoom in on marker
+
+                            // Open the marker's popup
+                            marker.openPopup();
                         }
                     });
                 });
             }
+
         }
 
         // Call initMap when the page loads
