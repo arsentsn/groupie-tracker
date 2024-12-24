@@ -26,7 +26,7 @@ func main() {
 	mux.HandleFunc("/geo", middleware.LoggingMiddleware(handlers.GeoHandler))
 
 	// Start the HTTP server on localhost:8080
-	log.Println("Starting server on :8080")
+	log.Println("Starting server on localhost:8080")
 	if err := http.ListenAndServe("localhost:8080", mux); err != nil {
 		log.Printf("Server error: %v", err)
 		log.Fatalf("Server failed to start: %v", err)

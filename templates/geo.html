@@ -8,54 +8,21 @@
     <link rel="stylesheet" href="static/styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
-        .map-wrapper {
-            position: relative;
-        }
-
-        .loading-overlay {
+        .banner {
+            display: none;
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
             z-index: 1000;
         }
 
-        .loading-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-            color: black;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(0, 0, 0, 0.3);
-            border-radius: 50%;
-            border-top-color: #000;
-            animation: spin 1s linear infinite;
-            -webkit-animation: spin 1s linear infinite;
-            margin-left: 10px;
-            vertical-align: middle;
-        }
-
-        @keyframes spin {
-            to {
-                -webkit-transform: rotate(360deg);
-            }
-        }
-
-        @-webkit-keyframes spin {
-            to {
-                -webkit-transform: rotate(360deg);
-            }
+        .banner.active {
+            display: block;
         }
     </style>
 </head>
@@ -75,12 +42,13 @@
                     style="background-image: url('{{ .Artist.Image }}'); height: 150px; width:150px;"></div>
                 <div class="locations-wrapper">
                     {{ range .Locations }}
-                    <div class="location-item">{{ FormatLocation . }}</div>
+                    <button class="location-item" data-location="{{ FormatLocation . }}">{{ FormatLocation . }}</button>
                     {{ end }}
                 </div>
             </div>
             <div class="map-wrapper">
-                <div id="map" style="height: 450px; width: 100%; border-radius: 10px;"></div>
+                <div id="map" style="height: 450px; width: 100%; border-radius: 10px; position: relative;"></div>
+                <div class="banner" id="location-banner"></div>
             </div>
         </div>
     </div>
@@ -102,7 +70,7 @@
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
-            const markers = [];
+            const markers = new Map();
             let geocodedCount = 0;
 
             // Show loading indicator
@@ -113,7 +81,6 @@
             loadingContent.innerHTML = 'Loading locations... <div class="spinner"></div>';
             loadingOverlay.appendChild(loadingContent);
             document.querySelector('.map-wrapper').appendChild(loadingOverlay);
-
 
             locations.forEach(location => {
                 geocodeLocation(location);
@@ -127,14 +94,7 @@
                             const { lat, lon } = data[0];
                             const marker = L.marker([lat, lon]).addTo(map);
 
-                            // Create popup content with location and dates
-                            const popupContent = `
-                                <strong>${location}</strong><br>
-                                Dates: ${locationData[location].Dates.join(', ')}
-                            `;
-                            marker.bindPopup(popupContent);
-
-                            markers.push(marker);
+                            markers.set(location, marker);
                         }
                         geocodedCount++;
                         if (geocodedCount === locations.length) {
@@ -155,13 +115,24 @@
                 loadingOverlay.remove();
 
                 // Fit the map to show all markers
-                if (markers.length > 0) {
-                    const group = new L.featureGroup(markers);
+                if (markers.size > 0) {
+                    const group = new L.featureGroup(Array.from(markers.values()));
                     map.fitBounds(group.getBounds().pad(0.1));
                 }
+
+                // Enable clickable buttons for locations
+                const locationButtons = document.querySelectorAll('.location-item');
+                locationButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const location = button.dataset.location;
+                        if (markers.has(location)) {
+                            const marker = markers.get(location);
+                            map.setView(marker.getLatLng(), 5); // Zoom in on marker
+                        }
+                    });
+                });
             }
         }
-
 
         // Call initMap when the page loads
         window.onload = initMap;
