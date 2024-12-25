@@ -2,6 +2,8 @@
 
 Groupie Tracker is a web application that displays information about music bands and artists. It allows users to explore various details about their favorite musicians, including concert dates, locations, and more.
 
+[INSTRUCTIONS] (https://github.com/01-edu/public/tree/master/subjects/groupie-tracker)
+
 ## Features
 
 - Display a list of artists/bands
