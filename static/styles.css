@@ -10,11 +10,17 @@ body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: #ffffff;
+    height: 100%;
+    padding-top: 5px;
+    margin-right: calc(100% - 100vw);
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
 }
 
 footer {
-    margin-top: 20px;
+    margin-top: 15px;
     font-size: 14px;
     color: #ffffff;
     text-align: center;
@@ -25,10 +31,17 @@ footer {
     border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+footer a {
+    text-decoration: none;
+    color: #c5c5c5;
+}
+
 .container {
+    flex: 1;
     max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
-    padding: 20px;
+    padding: 15px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 15px;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -39,13 +52,13 @@ footer {
 
 header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 0.8rem;
 }
 
 h1 {
     color: #ffffff;
     font-size: 3rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -574,7 +587,7 @@ li:last-child {
 
 .container-map h1,
 .container-map .artist-image {
-    margin: 15px 0 0 15px;
+    margin: 10px 0 0 15px;
 }
 
 .map-wrapper {
@@ -587,7 +600,6 @@ li:last-child {
 .geo-artist-card {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 20px;
     flex-wrap: nowrap;
 }
 
