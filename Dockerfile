@@ -1,5 +1,5 @@
 # Start from the official Go image
-FROM golang:1.22.2-alpine
+FROM golang:1.22.2-alpine AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -15,6 +15,19 @@ COPY . .
 
 # Build the Go app
 RUN go build -o groupie-tracker .
+
+# Use a minimal base image for the final stage
+FROM alpine:latest
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the binary from the builder stage
+COPY --from=builder /app/groupie-tracker .
+
+# Copy the templates directory from the builder stage
+COPY --from=builder /app/templates ./templates
+COPY --from=builder /app/static ./static
 
 # Expose port 8080
 EXPOSE 8080
