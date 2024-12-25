@@ -34,7 +34,6 @@ cd groupie-tracker
 3. Run the application:
 go run .
 
-
 4. Open your browser and visit `http://localhost:8080`
 
 ### Docker Deployment
@@ -45,15 +44,7 @@ docker build -t groupie-tracker .
 2. Run the container:
 docker run -p 8080:8080 groupie-tracker
 
-
 3. Access the application at `http://localhost:8080`
-
-## Project Structure
-
-- `main.go`: Entry point of the application
-- `templates/`: HTML templates
-- `static/`: Static assets (CSS, JavaScript, images)
-- `Dockerfile`: Instructions for building the Docker image
 
 ## Authors
 
