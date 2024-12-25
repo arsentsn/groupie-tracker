@@ -1,76 +1,60 @@
 # Groupie Tracker
 
-Groupie Tracker is a web application that displays information about music bands and artists. It uses data from a provided API to show details such as band members, creation date, first album release date, and locations of concerts.
-
-Hosted here:
-
-## Table of Contents
-
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [API](#api)
-- [Contributing](#contributing)
-- [License](#license)
+Groupie Tracker is a web application that displays information about music bands and artists. It allows users to explore various details about their favorite musicians, including concert dates, locations, and more.
 
 ## Features
 
 - Display a list of artists/bands
 - Show detailed information for each artist/band
-- Interactive map of concert locations
 - Search functionality
-- Filtering options
+- Interactive map of concert locations
+- Responsive design for various screen sizes
 
 ## Technologies Used
 
-- Go (Backend)
-- HTML/CSS/JavaScript (Frontend)
-- React (Frontend framework)
-- Bootstrap (CSS framework)
-- Vite (Build tool)
+- Go (Golang) for backend
+- HTML, CSS, and JavaScript for frontend
+- Docker for containerization
+
+## Prerequisites
+
+- Go 1.22 or later
+- Docker (optional, for containerized deployment)
 
 ## Getting Started
 
-### Prerequisites
-
-- Go (version 1.x or later)
-- Node.js and npm (for frontend development)
-
-### Installation
+### Local Development
 
 1. Clone the repository:
+git clone https://github.com/yourusername/groupie-tracker.git
+cd groupie-tracker
 
-2. Navigate to the project directory:
+3. Run the application:
+go run .
 
-3. go run .
 
-4. Open your browser and navigate to `http://localhost:8080`
+4. Open your browser and visit `http://localhost:8080`
+
+### Docker Deployment
+
+1. Build the Docker image:
+docker build -t groupie-tracker .
+
+2. Run the container:
+docker run -p 8080:8080 groupie-tracker
+
+
+3. Access the application at `http://localhost:8080`
 
 ## Project Structure
 
-- `src/`: Contains the frontend React application
-- `public/`: Static assets for the frontend
-- `main.go`: Entry point for the Go backend server
-- `api/`: Go package for handling API requests
-- `models/`: Go package for data models
+- `main.go`: Entry point of the application
+- `templates/`: HTML templates
+- `static/`: Static assets (CSS, JavaScript, images)
+- `Dockerfile`: Instructions for building the Docker image
 
-## API
+## Authors
 
-The application uses the following API endpoints:
-
-- Artists: https://groupietrackers.herokuapp.com/api/artists
-- Locations: https://groupietrackers.herokuapp.com/api/locations
-- Dates: https://groupietrackers.herokuapp.com/api/dates
-- Relation: https://groupietrackers.herokuapp.com/api/relation
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+- [Arsen](https://github.com/tsnarsen)
+- [Uipko](https://github.com/stikkeruip)
+- [Yiannis](https://github.com/iovossos)
