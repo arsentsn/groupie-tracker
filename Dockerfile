@@ -25,7 +25,7 @@ WORKDIR /app
 # Copy the binary from the builder stage
 COPY --from=builder /app/groupie-tracker .
 
-# Copy the templates directory from the builder stage
+# Copy the templates & static directory from the builder stage
 COPY --from=builder /app/templates ./templates
 COPY --from=builder /app/static ./static
 
