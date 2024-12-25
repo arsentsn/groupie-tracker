@@ -28,7 +28,7 @@ Groupie Tracker is a web application that displays information about music bands
 ### Local Development
 
 1. Clone the repository:
-git clone https://github.com/yourusername/groupie-tracker.git
+git clone https://github.com/tsnarsen/groupie-tracker.git
 cd groupie-tracker
 
 3. Run the application:
