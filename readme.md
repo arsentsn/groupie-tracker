@@ -48,6 +48,6 @@ docker run -p 8080:8080 groupie-tracker
 
 ## Authors
 
-- [tsnarsen](https://github.com/tsnarsen)
+- [arsentsn](https://github.com/arsentsn)
 - [stikkeruip](https://github.com/stikkeruip)
 - [iovossos](https://github.com/iovossos)
