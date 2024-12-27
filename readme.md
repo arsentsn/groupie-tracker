@@ -8,7 +8,7 @@ Groupie Tracker is a web application that displays information about music bands
 
 - Display a list of artists/bands
 - Show detailed information for each artist/band
-- Search & filters functionality
+- Search & filter functionality
 - Interactive map of concert locations
 - Responsive design for various screen sizes
 - Shortcuts to flip multiple cards effectively (F for flip, R for reset)
